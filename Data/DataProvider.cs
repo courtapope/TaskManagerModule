@@ -14,7 +14,7 @@ using System.Data;
 using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
-
+using Website.DesktopModules.TaskManagerModule.Components;
 
 namespace Website.DesktopModules.TaskManagerModule.Data
 {
@@ -80,6 +80,18 @@ namespace Website.DesktopModules.TaskManagerModule.Data
 
         //public abstract IDataReader GetItem(int itemId);        
 
+
+        public abstract IDataReader GetTasks(int moduleId);
+
+        public abstract IDataReader GetTask(int taskId);
+
+        public abstract void DeleteTask(int taskId);
+
+        public abstract void DeleteTasks(int moduleId);
+
+        public abstract int AddTask(Task t);
+
+        public abstract void UpdateTask(Task t);
 
         #endregion
 
