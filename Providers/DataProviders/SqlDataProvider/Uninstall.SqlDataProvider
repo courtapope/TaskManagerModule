@@ -8,7 +8,11 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* check if the TaskManager_Task table exists, if so, drop it before creating it. */
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TaskManager_Task]'))
+DROP TABLE {databaseOwner}[{objectQualifier}TaskManager_Task]
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

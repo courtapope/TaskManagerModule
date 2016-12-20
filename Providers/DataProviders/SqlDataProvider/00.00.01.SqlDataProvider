@@ -8,7 +8,39 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* check if the TaskManager_Task table exists, if so, drop it before creating it. */
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TaskManager_Task]'))
+DROP TABLE {databaseOwner}[{objectQualifier}TaskManager_Task]
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}TaskManager_Task
+	(
+	TaskId int NOT NULL IDENTITY (1, 1),
+	TaskName nvarchar(MAX) NOT NULL,
+	TaskDescription nvarchar(MAX) NOT NULL,
+	AssignedUserId int NULL,
+	ModuleID int NOT NULL,
+	TargetCompletionDate datetime NULL,
+	CompletedOnDate datetime NULL,
+	ContentItemID int NULL,
+	CreatedOnDate datetime NOT NULL,
+	CreatedByUserId int NOT NULL,
+	LastModifiedOnDate datetime NOT NULL,
+	LastmodifiedByUserId int NOT NULL
+	)	ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}TaskManager_Task ADD CONSTRAINT
+	PK_{objectQualifier}TaskManager_Task PRIMARY KEY CLUSTERED
+	(
+	TaskId
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_UP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
