@@ -1,0 +1,23 @@
+﻿<h3>TaskManagerModule</h3>
+<p class="Contributor">
+	Courtney Popielarz <br />
+	<a href="mailto:courtney@frontedge.com">courtney@frontedge.com</a><br />
+	<a href=http://www.frontedge.com/>http://www.frontedge.com/</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the TaskManagerModule</h3>
+	<p class="Owner">
+		<b>Version CHANGEME</b><br /><br />
+	</p>
+	<p>Description about version.</p>
+	
+	<h4>Bug Fixes</h4>
+	<ul>
+			<li>List</li>
+			<li>of</li>
+			<li>bug</li>
+			<li>fixes</li>
+	</ul>
+	
+</div>
