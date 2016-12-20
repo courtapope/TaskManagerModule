@@ -42,6 +42,174 @@ ALTER TABLE {databaseOwner}{objectQualifier}TaskManager_Task ADD CONSTRAINT
 
 GO
 
+
+
+IF EXISTS(SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}TaskManager_AddTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_AddTask
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_AddTask
+
+@TaskName nvarchar(max)
+, @TaskDescription nvarchar(max)
+, @AssignedUserId int
+, @ModuleId int
+, @TargetCompletionDate datetime
+, @CompletedOnDate datetime
+, @CreatedByUserId int
+
+AS
+INSERT INTO {databaseOwner}[{objectQualifier}VBDnn7TmDal1_Task]
+         ([TaskName]
+         ,[TaskDescription]
+         ,[AssignedUserId]
+         ,[ModuleId]
+         ,[TargetCompletionDate]
+         ,[CompletedOnDate]
+         ,[CreatedOnDate]
+         ,[CreatedByUserId]
+         ,[LastModifiedOnDate]
+         ,[LastModifiedByUserId])
+   VALUES
+     (@TaskName
+           , @TaskDescription
+           , @AssignedUserId
+           , @ModuleId
+           , @TargetCompletionDate
+           , @CompletedOnDate
+           , GETDATE()
+           , @CreatedByUserId
+           , GETDATE()
+           , @CreatedByUserId
+           )
+
+Select @@Identity
+
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id= object_id(N'{databaseOwner}{objectQualifier}TaskManager_UpdateTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {objectQualifier}TaskManager_UpdateTask
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_UpdateTask
+	@TaskID int
+	, @TaskName nvarchar(MAX)
+	, @TaskDescription nvarchar(MAX)
+	, @AssignedUserId int
+	, @ModuleId int
+	, @TargetCompletionDate datetime
+	, @CompletedOnDate datetime
+	, @ContentItemId int
+	, @LastModifiedByUserId int
+
+
+AS
+UPDATE {databaseOwner}[{objectQualifier}TaskManager_Task]
+	Set
+	TaskName = @TaskName
+	, TaskDescription = @TaskDescription
+	, AssignedUserId = @AssignedUserId
+	, ModuleId = @ModuleId
+	, TargetCompletionDate = @TargetCompletionDate
+	, CompletedOnDate = @CompletedOnDate
+	, ContentItemId = @ContentItemId
+	, LastModifiedOnDate = GETDATE()
+	, LastModifiedByUserId = @LastModifiedByUserId
+WHERE
+	TaskId = @TaskId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_DeleteTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTasks
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTasks
+	@ModuleId int
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}TaskManager_Task
+WHERE
+	ModuleId=@ModuleId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTask
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTask
+	@TaskId int
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}TaskManager_Task
+WHERE
+	TaskId= @TaskId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_GetTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTask
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTask
+	@TaskId int
+AS
+Select
+	t.TaskId
+	, t.ModuleId
+	, t.TaskName
+	, t.TaskDescription
+	, t.AssigneduserID
+	, t.TargetCompletionDate
+	, t.CreatedOnDate
+	, t.CreatedByUserId
+	, t.LastModifiedOnDate
+	, t.LastModifiedByUserId
+	, CI.ContentItemID
+	, CI.Content
+	, CI.ContentTypeID
+	, CI.TabiD
+	, CI.ContentKey
+	, CI.Indexed
+FROM
+	{databaseOwner}{objectQualifier}TaskManager_Task t
+	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON t.ContentItemId = CI.ContentItemID
+WHERE
+	t.TaskId=@TaskId
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_GetTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTasks
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTasks
+	@ModuleId int
+AS
+SELECT
+	t.TaskId
+	, t.ModuleId
+	, t.TaskName
+	, t.TaskDescription
+	, t.AssigneduserID
+	, t.TargetCompletionDate
+	, t.CreatedOnDate
+	, t.CreatedByUserId
+	, t.LastModifiedOnDate
+	, t.LastModifiedByUserId
+	, CI.ContentItemID
+	, CI.Content
+	, CI.ContentTypeID
+	, CI.TabiD
+	, CI.ContentKey
+	, CI.Indexed
+FROM
+	{databaseOwner}{objectQualifier}TaskManager_Task t
+	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON t.ContentItemId = CI.ContentItemID
+WHERE
+	t.ModuleId=@ModuleId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
