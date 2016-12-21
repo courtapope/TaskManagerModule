@@ -56,13 +56,27 @@ namespace Website.DesktopModules.TaskManagerModule
             t = new Task
                 {
                     AssignedUserId = Convert.ToInt32(ddlAssignedUser.SelectedValue),
-                    CompletedOnDate = Convert.ToDateTime(txtCompletionDate.Text.Trim()),
+                    //CompletedOnDate = Convert.ToDateTime(txtCompletionDate.Text.Trim()),
                     CreatedByUserId = UserId,
                     CreatedOnDate = DateTime.Now,
-                    TargetCompletionDate = Convert.ToDateTime(txtTargetCompletionDate.Text.Trim()),
+                    //TargetCompletionDate = Convert.ToDateTime(txtTargetCompletionDate.Text.Trim()),
                     TaskName = txtName.Text.Trim(),
-                    TaskDescription = txtDescription.Text.Trim()
+                    TaskDescription = txtDescription.Text.Trim(),
+                    ModuleId = ModuleId
                 };
+
+            //check for dates
+            DateTime outputDate;
+            if(DateTime.TryParse(txtCompletionDate.Text.Trim(),out outputDate))
+            {
+                t.CompletedOnDate = outputDate;
+            }
+
+            if (DateTime.TryParse(txtTargetCompletionDate.Text.Trim(), out outputDate))
+            {
+                t.TargetCompletionDate = outputDate;
+            }
+
             TaskController.SaveTask(t, TabId);
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }

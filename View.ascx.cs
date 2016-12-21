@@ -16,6 +16,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Services.Localization;
+using Website.DesktopModules.TaskManagerModule.Components;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
@@ -38,7 +39,8 @@ namespace Website.DesktopModules.TaskManagerModule
         {
             try
             {
-
+                rptTaskList.DataSource = TaskController.GetTask(ModuleId);
+                rptTaskList.DataBind();
             }
             catch (Exception exc) //Module failed to load
             {

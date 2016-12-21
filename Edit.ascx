@@ -9,7 +9,7 @@
 <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="20" />
 <br />
 
-<dnndev:label ID="lblAssignedUser" runat="server" Text="AssignedUsed" HelpText="Choose a user for the task" />
+<dnndev:label ID="lblAssignedUser" runat="server" Text="Assigned User" HelpText="Choose a user for the task" />
 <asp:DropDownList ID="ddlAssignedUser" runat="server" />
 <br />
 
