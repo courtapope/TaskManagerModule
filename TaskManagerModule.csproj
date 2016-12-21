@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\Task.cs" />
+    <Compile Include="Components\TaskController.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="TaskManagerModuleModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
