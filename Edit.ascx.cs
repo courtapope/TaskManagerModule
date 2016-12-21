@@ -14,6 +14,7 @@
 using System;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Entities.Users;
+using Website.DesktopModules.TaskManagerModule.Components;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
@@ -35,7 +36,7 @@ namespace Website.DesktopModules.TaskManagerModule
         {
             try
             {
-                if(Page.IsPostBack)
+                if(!Page.IsPostBack)
                 {
                     ddlAssignedUser.DataSource = UserController.GetUsers(PortalId);
                     ddlAssignedUser.DataTextField = "Username";
@@ -51,7 +52,19 @@ namespace Website.DesktopModules.TaskManagerModule
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-
+            Task t;
+            t = new Task
+                {
+                    AssignedUserId = Convert.ToInt32(ddlAssignedUser.SelectedValue),
+                    CompletedOnDate = Convert.ToDateTime(txtCompletionDate.Text.Trim()),
+                    CreatedByUserId = UserId,
+                    CreatedOnDate = DateTime.Now,
+                    TargetCompletionDate = Convert.ToDateTime(txtTargetCompletionDate.Text.Trim()),
+                    TaskName = txtName.Text.Trim(),
+                    TaskDescription = txtDescription.Text.Trim()
+                };
+            TaskController.SaveTask(t, TabId);
+            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)

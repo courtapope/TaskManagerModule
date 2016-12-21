@@ -36,11 +36,17 @@ namespace Website.DesktopModules.TaskManagerModule.Components
                 t.TaskId = DataProvider.Instance().AddTask(t);
 
                 //add content item integration
+                var cntTaxonomy = new Taxonomy.Content();
+                var objContentItem = cntTaxonomy.CreateContentItem(t, tabId);
+                t.ContentItemId = objContentItem.ContentItemId;
+                SaveTask(t, tabId);
 
             }
             else
             {
                 DataProvider.Instance().UpdateTask(t);
+                var cntTaxonomy = new Taxonomy.Content();
+                cntTaxonomy.UpdateContentItem(t, tabId);
             }
             return t.TaskId;
         }
