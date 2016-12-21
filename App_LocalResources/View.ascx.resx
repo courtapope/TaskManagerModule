@@ -120,4 +120,7 @@
   <data name="EditModule.Text" xml:space="preserve">
     <value>Edit Module</value>
   </data>
+  <data name="EditTask.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
 </root>

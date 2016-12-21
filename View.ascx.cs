@@ -17,6 +17,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Services.Localization;
 using Website.DesktopModules.TaskManagerModule.Components;
+using System.Web.UI.WebControls;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
@@ -46,6 +47,38 @@ namespace Website.DesktopModules.TaskManagerModule
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected void rptTaskListOnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+            {
+                var lnkEdit = e.Item.FindControl("lnkEdit") as LinkButton;
+                var pnlAdminControls = e.Item.FindControl("pnlAdmin") as Panel;
+
+                var curTask = (Task)e.Item.DataItem;
+
+                if(IsEditable && lnkEdit != null && pnlAdminControls != null)
+                {
+                    pnlAdminControls.Visible = true;
+                    lnkEdit.CommandArgument = curTask.TaskId.ToString();
+                    lnkEdit.Enabled = lnkEdit.Visible = true;
+                }
+                else
+                {
+                    pnlAdminControls.Visible = false;
+                }
+            }
+        }
+
+        public void rptTaskListOnItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if(e.CommandName=="Edit")
+            {
+                Response.Redirect(EditUrl(string.Empty, string.Empty, "Edit", "tid" + e.CommandArgument));
+            }
+
+            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
 
         public ModuleActionCollection ModuleActions
