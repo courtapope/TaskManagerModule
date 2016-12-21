@@ -11,10 +11,21 @@
 */
 
 using DotNetNuke.Entities.Modules;
+using System;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
     public class TaskManagerModuleModuleBase : PortalModuleBase
     {
+        public int TaskId
+        {
+            get
+            {
+                var qs = Request.QueryString["tid"];
+                if (qs != null)
+                    return Convert.ToInt32(qs);
+                return -1;
+            }
+        }
     }
 }
