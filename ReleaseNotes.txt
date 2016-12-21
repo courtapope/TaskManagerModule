@@ -8,9 +8,9 @@
 <div class="License">
 	<h3>About the TaskManagerModule</h3>
 	<p class="Owner">
-		<b>Version CHANGEME</b><br /><br />
+		<b>Version 00.00.01</b><br /><br />
 	</p>
-	<p>Description about version.</p>
+	<p>This is the first verion of our module v00.00.01, it is limited in functionality, but does work.</p>
 	
 	<h4>Bug Fixes</h4>
 	<ul>
