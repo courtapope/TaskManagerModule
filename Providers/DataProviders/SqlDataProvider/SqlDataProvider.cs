@@ -11,8 +11,12 @@
 */
 
 using System;
+using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
+using Website.DesktopModules.TaskManagerModule.Components;
+using Microsoft.ApplicationBlocks.Data;
+using System.Data.SqlClient;
 
 namespace Website.DesktopModules.TaskManagerModule.Data
 {
@@ -129,6 +133,7 @@ namespace Website.DesktopModules.TaskManagerModule.Data
             return Null.GetNull(field, DBNull.Value);
         }
 
+
         #endregion
 
         #region Public Methods
@@ -143,6 +148,56 @@ namespace Website.DesktopModules.TaskManagerModule.Data
         //    return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetItemsForUser", userId, portalId);
         //}
 
+
+        public override IDataReader GetTasks(int moduleId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetTasks",
+                                            new SqlParameter("@ModuleId", moduleId));
+        }
+
+        public override IDataReader GetTask(int taskId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetTask",
+                                            new SqlParameter("@TaskId", taskId));
+        }
+
+        public override void DeleteTask(int taskId)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "DeleteTask", new SqlParameter("@TaskId",taskId));
+        }
+
+        public override void DeleteTasks(int moduleId)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "DeleteTasks", new SqlParameter("@ModuleId", moduleId));
+        }
+
+        public override int AddTask(Task t)
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString,CommandType.StoredProcedure,NamePrefix+"AddTask"
+                , new SqlParameter("@TaskName",t.TaskName)
+                , new SqlParameter("@TaskDescription", t.TaskDescription)
+                , new SqlParameter("@AssignedUserId", t.AssignedUserId)
+                , new SqlParameter("@ModuleId", t.ModuleId)
+                , new SqlParameter("@TargetCompletionDate", t.TargetCompletionDate)
+                , new SqlParameter("@CompletedOnDate", t.CompletedOnDate)
+                , new SqlParameter("@CreatedByUserId", t. CreatedByUserId)
+                ));
+        }
+
+        public override void UpdateTask(Task t)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString,CommandType.StoredProcedure,NamePrefix+"UpdateTask"
+                , new SqlParameter("@TaskId", t.TaskId)
+                , new SqlParameter("@TaskName", t.TaskName)
+                , new SqlParameter("@TaskDescription", t.TaskDescription)
+                , new SqlParameter("@AssignedUserId", t.AssignedUserId)
+                , new SqlParameter("@ModuleId", t.ModuleId)
+                , new SqlParameter("@TargetCompletionDate", t.TargetCompletionDate)
+                , new SqlParameter("@CompletedOnDate", t.CompletedOnDate)
+                , new SqlParameter("@ContentItemId",t.ContentItemId)
+                , new SqlParameter("@LastModifiedByUserId", t.LastModifiedByUserId)
+                );
+        }
 
         #endregion
 
