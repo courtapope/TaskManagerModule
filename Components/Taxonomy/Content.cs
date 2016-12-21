@@ -22,7 +22,7 @@ namespace Website.DesktopModules.TaskManagerModule.Components.Taxonomy
         public ContentItem CreateContentItem(Task objTask, int tabId)
         {
             var typeController = new ContentTypeController();
-            var colContentTypes = (from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName);      /////////////
+            var colContentTypes = (from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName select t);
             int contentTypeId;
 
             if (colContentTypes.Count() > 0)
@@ -100,7 +100,7 @@ namespace Website.DesktopModules.TaskManagerModule.Components.Taxonomy
         private static int CreateContentType()
         {
             var typeController = new ContentTypeController();
-            var objContentType = new ContentType(ContentType = ContentTypeName);
+            var objContentType = new ContentType { ContentType = ContentTypeName };
 
             return typeController.AddContentType(objContentType);
         }

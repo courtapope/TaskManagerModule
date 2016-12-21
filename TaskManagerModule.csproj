@@ -68,6 +68,7 @@
     <Compile Include="Components\Task.cs" />
     <Compile Include="Components\TaskController.cs" />
     <Compile Include="Components\Taxonomy\Content.cs" />
+    <Compile Include="Components\Taxonomy\Terms.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="TaskManagerModuleModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
