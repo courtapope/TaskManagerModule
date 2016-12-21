@@ -15,6 +15,7 @@
 
         <asp:Panel ID="pnlAdmin" runat="server" Visible="false">
             <asp:LinkButton ID="lnkEdit" runat="server" ResourceKey="EditTask.Text" CommandName="Edit" Visible="false" Enabled="false" />
+            <asp:LinkButton ID="lnkDelete" runat="server" ResourceKey="DeleteTask.Text" CommandName="Delete" Visible="false" Enabled="false" />
         </asp:Panel>
     </li>
 </ItemTemplate>

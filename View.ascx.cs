@@ -18,6 +18,7 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Services.Localization;
 using Website.DesktopModules.TaskManagerModule.Components;
 using System.Web.UI.WebControls;
+using DotNetNuke.UI.Utilities;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
@@ -54,15 +55,19 @@ namespace Website.DesktopModules.TaskManagerModule
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
                 var lnkEdit = e.Item.FindControl("lnkEdit") as LinkButton;
-                var pnlAdminControls = e.Item.FindControl("pnlAdmin") as Panel;
+                var lnkDelete = e.Item.FindControl("lnkDelete") as LinkButton;
+                 var pnlAdminControls = e.Item.FindControl("pnlAdmin") as Panel;
 
                 var curTask = (Task)e.Item.DataItem;
 
-                if(IsEditable && lnkEdit != null && pnlAdminControls != null)
+                if(IsEditable && lnkDelete!=null && lnkEdit != null && pnlAdminControls != null)
                 {
                     pnlAdminControls.Visible = true;
-                    lnkEdit.CommandArgument = curTask.TaskId.ToString();
-                    lnkEdit.Enabled = lnkEdit.Visible = true;
+                    lnkDelete.CommandArgument = lnkEdit.CommandArgument = curTask.TaskId.ToString();
+                    lnkDelete.Enabled = lnkDelete.Visible = lnkEdit.Enabled = lnkEdit.Visible = true;
+
+                    ClientAPI.AddButtonConfirm(lnkDelete, Localization.GetString("ConfirmDelete", LocalResourceFile));
+
                 }
                 else
                 {
@@ -76,6 +81,11 @@ namespace Website.DesktopModules.TaskManagerModule
             if(e.CommandName=="Edit")
             {
                 Response.Redirect(EditUrl(string.Empty, string.Empty, "Edit", "tid" + e.CommandArgument));
+            }
+
+            if (e.CommandName == "Delete")
+            {
+                TaskController.DeleteTask(Convert.ToInt32(e.CommandArgument));
             }
 
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
