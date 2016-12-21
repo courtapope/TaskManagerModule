@@ -13,6 +13,7 @@
 
 using System;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Entities.Users;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
@@ -34,12 +35,28 @@ namespace Website.DesktopModules.TaskManagerModule
         {
             try
             {
-
+                if(Page.IsPostBack)
+                {
+                    ddlAssignedUser.DataSource = UserController.GetUsers(PortalId);
+                    ddlAssignedUser.DataTextField = "Username";
+                    ddlAssignedUser.DataValueField = "UserId";
+                    ddlAssignedUser.DataBind();
+                }
             }
             catch (Exception exc) //Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
     }
 }

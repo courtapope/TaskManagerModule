@@ -21,8 +21,8 @@
 <asp:TextBox ID="txtCompletionDate" runat="server" />
 <br />
 
-<asp:LinkButton ID="btnSubmit" runat="server" Text="Save Task" />
+<asp:LinkButton ID="btnSubmit" runat="server" Text="Save Task" OnClick="btnSubmit_Click" />
 &nbsp
 
-<asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" />
+<asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
 <br />
