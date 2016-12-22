@@ -32,7 +32,22 @@ namespace Website.DesktopModules.TaskManagerModule
     /// -----------------------------------------------------------------------------
     public partial class Edit : TaskManagerModuleModuleBase
     {
-        protected void Page_Load(object sender, EventArgs e)
+        #region Event Handlers
+        override protected void OnInit(EventArgs e)
+        {
+            InitializeComponent();
+            base.OnInit(e);
+        }
+        private void InitializeComponent()
+        {
+            this.Load += new System.EventHandler(this.Page_Load);
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -63,6 +78,8 @@ namespace Website.DesktopModules.TaskManagerModule
             }
         }
 
+        #endregion
+
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             Task t;
@@ -80,16 +97,16 @@ namespace Website.DesktopModules.TaskManagerModule
             {
 
                 t = new Task
-                {
-                    AssignedUserId = Convert.ToInt32(ddlAssignedUser.SelectedValue),
-                    //CompletedOnDate = Convert.ToDateTime(txtCompletionDate.Text.Trim()),
-                    CreatedByUserId = UserId,
-                    CreatedOnDate = DateTime.Now,
-                    //TargetCompletionDate = Convert.ToDateTime(txtTargetCompletionDate.Text.Trim()),
-                    TaskName = txtName.Text.Trim(),
-                    TaskDescription = txtDescription.Text.Trim(),
-                    ModuleId = ModuleId
-                };
+                    {
+                        AssignedUserId = Convert.ToInt32(ddlAssignedUser.SelectedValue),
+                        //CompletedOnDate = Convert.ToDateTime(txtCompletionDate.Text.Trim()),
+                        CreatedByUserId = UserId,
+                        CreatedOnDate = DateTime.Now,
+                        //TargetCompletionDate = Convert.ToDateTime(txtTargetCompletionDate.Text.Trim()),
+                        TaskName = txtName.Text.Trim(),
+                        TaskDescription = txtDescription.Text.Trim(),
+                        ModuleId = ModuleId
+                    };
             }
 
             //check for dates

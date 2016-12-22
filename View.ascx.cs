@@ -19,6 +19,7 @@ using DotNetNuke.Services.Localization;
 using Website.DesktopModules.TaskManagerModule.Components;
 using System.Web.UI.WebControls;
 using DotNetNuke.UI.Utilities;
+using System.ComponentModel;
 
 namespace Website.DesktopModules.TaskManagerModule
 {
@@ -37,11 +38,26 @@ namespace Website.DesktopModules.TaskManagerModule
     /// -----------------------------------------------------------------------------
     public partial class View : TaskManagerModuleModuleBase, IActionable
     {
-        protected void Page_Load(object sender, EventArgs e)
+        #region Event Handlers
+        override protected void OnInit(EventArgs e)
+        {
+            InitializeComponent();
+            base.OnInit(e);
+        }
+        private void InitializeComponent()
+        {
+            this.Load += new System.EventHandler(this.Page_Load);
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                rptTaskList.DataSource = TaskController.GetTask(ModuleId);
+                rptTaskList.DataSource = TaskController.GetTasks(ModuleId);
                 rptTaskList.DataBind();
             }
             catch (Exception exc) //Module failed to load
@@ -60,7 +76,7 @@ namespace Website.DesktopModules.TaskManagerModule
 
                 var curTask = (Task)e.Item.DataItem;
 
-                if(IsEditable && lnkDelete!=null && lnkEdit != null && pnlAdminControls != null)
+                if (IsEditable && lnkDelete!=null && lnkEdit != null && pnlAdminControls != null)
                 {
                     pnlAdminControls.Visible = true;
                     lnkDelete.CommandArgument = lnkEdit.CommandArgument = curTask.TaskId.ToString();
@@ -78,9 +94,9 @@ namespace Website.DesktopModules.TaskManagerModule
 
         public void rptTaskListOnItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if(e.CommandName=="Edit")
+            if (e.CommandName=="Edit")
             {
-                Response.Redirect(EditUrl(string.Empty, string.Empty, "Edit", "tid" + e.CommandArgument));
+                Response.Redirect(EditUrl(string.Empty, string.Empty, "Edit", "tid=" + e.CommandArgument));
             }
 
             if (e.CommandName == "Delete")
@@ -91,19 +107,18 @@ namespace Website.DesktopModules.TaskManagerModule
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
 
+        #endregion
+        #region Optional Interfaces
+
         public ModuleActionCollection ModuleActions
         {
             get
             {
-                var actions = new ModuleActionCollection
-                    {
-                        {
-                            GetNextActionID(), Localization.GetString("EditModule", LocalResourceFile), "", "", "",
-                            EditUrl(), false, SecurityAccessLevel.Edit, true, false
-                        }
-                    };
-                return actions;
+                ModuleActionCollection Actions = new ModuleActionCollection();
+                Actions.Add(GetNextActionID(), Localization.GetString("EditModule", this.LocalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                return Actions;
             }
         }
+        #endregion
     }
 }

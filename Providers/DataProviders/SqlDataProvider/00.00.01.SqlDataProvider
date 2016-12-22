@@ -8,14 +8,14 @@
 /*****                                                  *****/
 /************************************************************/
 
-/* check if the TaskManager_Task table exists, if so, drop it before creating it. */
+/* check if the TaskManagerModule_Task table exists, if so, drop it before creating it. */
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TaskManager_Task]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}TaskManager_Task]
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TaskManagerModule_Task]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}TaskManagerModule_Task]
 GO
 
 
-CREATE TABLE {databaseOwner}{objectQualifier}TaskManager_Task
+CREATE TABLE {databaseOwner}{objectQualifier}TaskManagerModule_Task
 	(
 	TaskId int NOT NULL IDENTITY (1, 1),
 	TaskName nvarchar(MAX) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE {databaseOwner}{objectQualifier}TaskManager_Task
 	ModuleID int NOT NULL,
 	TargetCompletionDate datetime NULL,
 	CompletedOnDate datetime NULL,
-	ContentItemID int NULL,
+	ContentItemId int NULL,
 	CreatedOnDate datetime NOT NULL,
 	CreatedByUserId int NOT NULL,
 	LastModifiedOnDate datetime NOT NULL,
@@ -34,21 +34,21 @@ CREATE TABLE {databaseOwner}{objectQualifier}TaskManager_Task
 GO
 
 
-ALTER TABLE {databaseOwner}{objectQualifier}TaskManager_Task ADD CONSTRAINT
-	PK_{objectQualifier}TaskManager_Task PRIMARY KEY CLUSTERED
+ALTER TABLE {databaseOwner}{objectQualifier}TaskManagerModule_Task ADD CONSTRAINT
+	PK_{objectQualifier}TaskManagerModule_Task PRIMARY KEY CLUSTERED
 	(
 	TaskId
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_UP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
 GO
 
 
 
-IF EXISTS(SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}TaskManager_AddTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_AddTask
+IF EXISTS(SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_AddTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_AddTask
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_AddTask
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_AddTask
 
 @TaskName nvarchar(max)
 , @TaskDescription nvarchar(max)
@@ -59,13 +59,14 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_AddTask
 , @CreatedByUserId int
 
 AS
-INSERT INTO {databaseOwner}[{objectQualifier}VBDnn7TmDal1_Task]
+INSERT INTO {databaseOwner}[{objectQualifier}TaskManagerModule_Task]
          ([TaskName]
          ,[TaskDescription]
          ,[AssignedUserId]
          ,[ModuleId]
          ,[TargetCompletionDate]
          ,[CompletedOnDate]
+		 ,[ContentItemId]
          ,[CreatedOnDate]
          ,[CreatedByUserId]
          ,[LastModifiedOnDate]
@@ -77,22 +78,24 @@ INSERT INTO {databaseOwner}[{objectQualifier}VBDnn7TmDal1_Task]
            , @ModuleId
            , @TargetCompletionDate
            , @CompletedOnDate
+		   , -1 --ContentItemId will be updated later
            , GETDATE()
            , @CreatedByUserId
            , GETDATE()
            , @CreatedByUserId
            )
 
+--return the ID of the task back so we can create a ContentItemId
 Select @@Identity
 
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id= object_id(N'{databaseOwner}{objectQualifier}TaskManager_UpdateTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {objectQualifier}TaskManager_UpdateTask
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id= object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_UpdateTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {objectQualifier}TaskManagerModule_UpdateTask
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_UpdateTask
-	@TaskID int
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_UpdateTask
+	@TaskId int
 	, @TaskName nvarchar(MAX)
 	, @TaskDescription nvarchar(MAX)
 	, @AssignedUserId int
@@ -104,7 +107,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_UpdateTask
 
 
 AS
-UPDATE {databaseOwner}[{objectQualifier}TaskManager_Task]
+UPDATE {databaseOwner}[{objectQualifier}TaskManagerModule_Task]
 	Set
 	TaskName = @TaskName
 	, TaskDescription = @TaskDescription
@@ -120,39 +123,39 @@ WHERE
 GO
 
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_DeleteTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTasks
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_DeleteTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTasks
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTasks
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTasks
 	@ModuleId int
 AS
 DELETE FROM
-	{databaseOwner}{objectQualifier}TaskManager_Task
+	{databaseOwner}{objectQualifier}TaskManageModuler_Task
 WHERE
 	ModuleId=@ModuleId
 GO
 
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTask
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManageModuler_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTask
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTask
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManageModuler_DeleteTask
 	@TaskId int
 AS
 DELETE FROM
-	{databaseOwner}{objectQualifier}TaskManager_Task
+	{databaseOwner}{objectQualifier}TaskManagerModule_Task
 WHERE
 	TaskId= @TaskId
 GO
 
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_GetTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTask
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_GetTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTask
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTask
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManageModuler_GetTask
 	@TaskId int
 AS
 Select
@@ -160,7 +163,7 @@ Select
 	, t.ModuleId
 	, t.TaskName
 	, t.TaskDescription
-	, t.AssigneduserID
+	, t.AssigneduserId
 	, t.TargetCompletionDate
 	, t.CreatedOnDate
 	, t.CreatedByUserId
@@ -173,17 +176,17 @@ Select
 	, CI.ContentKey
 	, CI.Indexed
 FROM
-	{databaseOwner}{objectQualifier}TaskManager_Task t
+	{databaseOwner}{objectQualifier}TaskManagerModule_Task t
 	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON t.ContentItemId = CI.ContentItemID
 WHERE
 	t.TaskId=@TaskId
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_GetTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTasks
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_GetTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTasks
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTasks
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTasks
 	@ModuleId int
 AS
 SELECT
@@ -191,7 +194,7 @@ SELECT
 	, t.ModuleId
 	, t.TaskName
 	, t.TaskDescription
-	, t.AssigneduserID
+	, t.AssigneduserId
 	, t.TargetCompletionDate
 	, t.CreatedOnDate
 	, t.CreatedByUserId
@@ -204,7 +207,7 @@ SELECT
 	, CI.ContentKey
 	, CI.Indexed
 FROM
-	{databaseOwner}{objectQualifier}TaskManager_Task t
+	{databaseOwner}{objectQualifier}TaskManagerModule_Task t
 	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON t.ContentItemId = CI.ContentItemID
 WHERE
 	t.ModuleId=@ModuleId

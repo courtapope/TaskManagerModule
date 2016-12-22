@@ -8,34 +8,34 @@
 /*****                                                  *****/
 /************************************************************/
 
-/* check if the TaskManager_Task table exists, if so, drop it before creating it. */
+/* check if the TaskManagerModule_Task table exists, if so, drop it before creating it. */
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TaskManager_Task]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}TaskManager_Task]
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TaskManagerModule_Task]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}TaskManagerModule_Task]
 GO
 
-IF EXISTS(SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}TaskManager_AddTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_AddTask
+IF EXISTS(SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_AddTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_AddTask
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id= object_id(N'{databaseOwner}{objectQualifier}TaskManager_UpdateTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {objectQualifier}TaskManager_UpdateTask
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id= object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_UpdateTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {objectQualifier}TaskManagerModule_UpdateTask
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_DeleteTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTasks
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_DeleteTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTasks
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_DeleteTask
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTask
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_GetTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTask
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_GetTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTask
 GO
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManager_GetTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
-	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManager_GetTasks
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_GetTasks') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTasks
 GO
 
 /************************************************************/

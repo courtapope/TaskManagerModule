@@ -75,26 +75,26 @@ namespace Website.DesktopModules.TaskManagerModule.Components.Taxonomy
         }
 
         /// <summary>
-        /// This removes a cotent item associated with a task from the data store. Should run everytime a Task is deleted.
+        /// This removes a content item associated with a task from the data store. Should run everytime a Task is deleted.
         /// </summary>
-        /// <param name="objTask">The Content Iten we wish to remove from the data store.</param>
+        /// <param name="objTask">The Content Item we wish to remove from the data store.</param>
         public void DeleteContentItem(Task objTask)
         {
             if (objTask.ContentItemId <= Null.NullInteger) return;
             var objContent = Util.GetContentController().GetContentItem(objTask.ContentItemId);
             if (objContent == null) return;
 
-            //remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade deley......)
+            //remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade deley here?)
             var cntTerms = new Terms();
             cntTerms.RemoveTaskTerms(objTask);
 
             Util.GetContentController().DeleteContentItem(objContent);
         }
 
-        #region Private Mathods
+        #region Private Methods
 
         /// <summary>
-        /// Creates a Content Type (for taxonmy) int the data store.
+        /// Creates a Content Type (for taxonmy) in the data store.
         /// </summary>
         /// <returns>The primary key value of the new ContentType.</returns>
         private static int CreateContentType()

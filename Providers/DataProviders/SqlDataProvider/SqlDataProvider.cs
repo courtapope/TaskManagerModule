@@ -128,9 +128,9 @@ namespace Website.DesktopModules.TaskManagerModule.Data
 
         #region Private Methods
 
-        private static object GetNull(object field)
+        private static object GetNull(object Field)
         {
-            return Null.GetNull(field, DBNull.Value);
+            return Null.GetNull(Field, DBNull.Value);
         }
 
 
@@ -180,7 +180,7 @@ namespace Website.DesktopModules.TaskManagerModule.Data
                 , new SqlParameter("@ModuleId", t.ModuleId)
                 , new SqlParameter("@TargetCompletionDate", t.TargetCompletionDate)
                 , new SqlParameter("@CompletedOnDate", t.CompletedOnDate)
-                , new SqlParameter("@CreatedByUserId", t. CreatedByUserId)
+                , new SqlParameter("@CreatedByUserId", t.CreatedByUserId)
                 ));
         }
 

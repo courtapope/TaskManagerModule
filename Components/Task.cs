@@ -11,17 +11,17 @@ namespace Website.DesktopModules.TaskManagerModule.Components
     public class Task : ContentItem
     {
         /// <summary>
-        /// TaskId identifies and undividuak task
+        /// TaskId identifies and individuak task
         /// </summary>
         public int TaskId { get; set; }
 
         /// <summary>
-        /// A string with the name of the Tesk
+        /// A string with the name of the Task
         /// </summary>
         public string TaskName { get; set; }
 
         /// <summary>
-        /// A string with a description of the Task
+        /// A string with the description of the Task
         /// </summary>
         public string TaskDescription { get; set; }
 
@@ -31,19 +31,19 @@ namespace Website.DesktopModules.TaskManagerModule.Components
         public int AssignedUserId { get; set; }
 
         /// <summary>
-        /// The ModuleId of where the task was created and gets despalyed
+        /// The ModuleId of where the task was created and gets displayed
         /// </summary>
         public int ModuleId { get; set; }
 
         /// <summary>
-        /// A date for the tagetted completion date
+        /// A date for the targetted completion date
         /// </summary>
         public DateTime TargetCompletionDate { get; set; }
 
         /// <summary>
         /// A date for the actual completion date of the task
         /// </summary>
-        public DateTime CompletedOnDate { get; set; }
+        public DateTime? CompletedOnDate { get; set; }
 
         /// <summary>
         /// An integer for the user id of the user who created the task
@@ -85,7 +85,7 @@ namespace Website.DesktopModules.TaskManagerModule.Components
         }
 
         /// <summary>
-        /// The username of the user who las updated the task
+        /// The username of the user who last updated the task
         /// </summary>
         public string LastUpdatedByUser
         {
@@ -122,6 +122,7 @@ namespace Website.DesktopModules.TaskManagerModule.Components
         /// <summary>
         /// Gets and sets the Key ID
         /// </summary>
+        /// /// <returns>An Integer</returns>
         public override int KeyID
         {
             get
