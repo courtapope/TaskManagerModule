@@ -8,7 +8,7 @@
 <ItemTemplate>
     <li class="tm_t">
         <h3>
-            <asp:Label ID="lblTaskNane" runat="server" Text="<%#DataBinder.Eval(Container.DataItem, "TaskName").ToString() %>" />
+            <asp:Label ID="lblTaskNane" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "TaskName").ToString() %>' />
         </h3>
         <asp:Label ID="lblTargetCompletionDate" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "TargetCompletionDate").ToString() %>' CssClass="tm_tcd" />
         <asp:Label ID="lblTaskDescription" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "TaskDescription").ToString() %>' CssClass="tm_td" />

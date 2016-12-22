@@ -131,17 +131,17 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTasks
 	@ModuleId int
 AS
 DELETE FROM
-	{databaseOwner}{objectQualifier}TaskManageModuler_Task
+	{databaseOwner}{objectQualifier}TaskManagerModule_Task
 WHERE
 	ModuleId=@ModuleId
 GO
 
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManageModuler_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databaseOwner}{objectQualifier}TaskManagerModule_DeleteTask') and OBJECTPROPERTY(id, N'IsProcedure')=1)
 	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTask
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManageModuler_DeleteTask
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_DeleteTask
 	@TaskId int
 AS
 DELETE FROM
@@ -155,7 +155,7 @@ IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id=object_id(N'{databas
 	DROP PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTask
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManageModuler_GetTask
+CREATE PROCEDURE {databaseOwner}{objectQualifier}TaskManagerModule_GetTask
 	@TaskId int
 AS
 Select
